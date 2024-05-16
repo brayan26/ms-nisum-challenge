@@ -1,0 +1,48 @@
+#Logger
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: 1122q!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+kafka:
+  topic: ms.spring.template.topic.in
+  server: localhost:9092
+  #Consumers
+  consumer:
+    groupId: ms-spring-template
+    autocommit:
+      interval:
+        ms: 100
+    session:
+      timeout: 15000
+    max:
+      poll:
+        records: 10
+        interval:
+          ms: 4000
+  #Producers
+  producer:
+    key: ms-template-api
+    retries: 3
+    acks: all
+    max:
+      flight:
+        request: 5
+    enable:
+      idempotence: true
+    batch:
+      size: 16384
+    buffer:
+      memory: 33554432
+    linger:
+      ms: 10
