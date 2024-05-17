@@ -1,7 +1,8 @@
 package com.backend.server.contexts.users.application.create;
 
 import com.backend.server.contexts.users.domain.UserMother;
-import com.backend.server.contexts.users.domain.dto.User;
+import com.backend.server.contexts.users.domain.clazz.User;
+import com.backend.server.contexts.users.domain.dto.UserSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,18 +13,18 @@ import org.springframework.test.util.AssertionErrors;
 @ExtendWith(MockitoExtension.class)
 public class UserCreatorTest {
     private UserCreator userCreatorUseCase;
+    private final User user = UserMother.random();
 
     @BeforeEach
     public void setup(){
         userCreatorUseCase = Mockito.mock(UserCreator.class);
-        User user = UserMother.random();
-        Mockito.when(userCreatorUseCase.run(user)).thenReturn(user);
+        Mockito.when(userCreatorUseCase.run(this.user)).thenReturn(this.user);
     }
 
     @Test
     public void createNewUserSuccessfully() {
-        User user = userCreatorUseCase.run(UserMother.random());
-        AssertionErrors.assertEquals( "The user mock is not created", UserMother.random(), user);
-        Mockito.verify(userCreatorUseCase).run(UserMother.random());
+        User user = userCreatorUseCase.run(this.user);
+        AssertionErrors.assertEquals( "The user mock is not created", this.user, user);
+        Mockito.verify(userCreatorUseCase).run(this.user);
     }
 }

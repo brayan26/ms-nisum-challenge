@@ -1,7 +1,7 @@
 package com.backend.server.contexts.users.application.update;
 
 import com.backend.server.contexts.users.domain.UserMother;
-import com.backend.server.contexts.users.domain.dto.User;
+import com.backend.server.contexts.users.domain.clazz.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,6 @@ public class UserEraserTest {
     @BeforeEach
     public void setup(){
         userEraserUseCase = Mockito.mock(UserEraser.class);
-        User user = UserMother.random();
     }
 
     @Test

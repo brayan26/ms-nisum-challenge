@@ -2,23 +2,30 @@ package com.backend.server.contexts.users.domain;
 
 import com.backend.server.contexts.users.domain.clazz.Phone;
 import com.backend.server.contexts.users.domain.clazz.User;
+import com.backend.server.contexts.users.domain.dto.UserSerializer;
+import org.modelmapper.ModelMapper;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.UUID;
 import java.util.Date;
 
 public class UserMother {
-    private static User create(String id, List<Phone> phones, Date created, Date lastLogin) {
-        return new User(id, "test", "test01", "1122q!", phones, true, "jwt", created, null, lastLogin);
+    private static User create(List<Phone> phones, Date created, Date lastLogin) {
+        return new User("cdb7778b-7ecf-41ca-8835-4f4b6cddc6c0", "test", "test01", "1122q!", phones, true, "jwt", created, null, lastLogin);
     }
 
     public static User random() {
-        Date today = new Date();
+        ZoneId zoneId = ZoneId.of("America/Bogota");
+        Date today = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
         return create(
-            UUID.randomUUID().toString(),
             List.of(new Phone("3024026718", "130", "57")),
             today,
             today
         );
+    }
+
+    public static UserSerializer randomSerializer() {
+        return new ModelMapper().map(UserMother.random(), UserSerializer.class);
     }
 }
