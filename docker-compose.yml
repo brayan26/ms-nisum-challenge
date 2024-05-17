@@ -1,70 +1,13 @@
 services:
-  mysql:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    container_name: mysql-cluster
-    environment:
-      MYSQL_ROOT_PASSWORD: 1122q!
-      MYSQL_DATABASE: test
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - spring_network
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-    healthcheck:
-      test: [ "CMD", "echo", "ruok", "|", "nc", "localhost", "2181", "|", "grep", "imok" ]
-      interval: 40s
-      timeout: 20s
-      retries: 3
-    networks:
-      - spring_network
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [ zookeeper ]
-    healthcheck:
-      test: [ "CMD", "bash", "-c", "kafka-broker-api-versions --bootstrap-server=kafka:9092" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
-    ports:
-      - "9092:9092"
-    networks:
-      - spring_network
-  command_after_start_kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [ kafka ]
-    volumes:
-      - ./init.sh:/init.sh
-    command: [ "sh", "-c", "ls -a && chmod +x /init.sh && /init.sh" ]
-    networks:
-      - spring_network
-  ms-backend-api:
+  ms-nisum-challenge:
     build: ./
-    container_name: ms-spring-template
+    container_name: ms-nisum-crud-api
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      SPRING_PROFILES_ACTIVE: local
     ports:
       - "8001:8001"
-    depends_on:
-      - mysql
-      - kafka
     networks:
       - spring_network
-volumes:
-  mysql_data:
-    name: mysql_data
 networks:
   spring_network:
     driver: bridge
