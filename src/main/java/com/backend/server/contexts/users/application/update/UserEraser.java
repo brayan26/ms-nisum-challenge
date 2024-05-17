@@ -9,7 +9,7 @@ public class UserEraser {
     @Autowired
     private IUserRepository repository;
 
-    public void run(Long id) {
+    public void run(String id) {
         repository.delete(id);
     }
 }
