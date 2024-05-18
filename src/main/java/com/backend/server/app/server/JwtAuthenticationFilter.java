@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .commaSeparatedStringToAuthorityList("public");
             authentication = new UsernamePasswordAuthenticationToken(PRINCIPAL, null, grantedAuths);
 
-        }else {
+        } else {
 
             if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
                 throw new GenericUnauthorizedException(
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
         if (token == null) {
             throw new GenericUnauthorizedException(
-                String.format("<JwtAuthenticationFilter - getAuthentication> Invalid token '%s'", token),
+                "<JwtAuthenticationFilter - getAuthentication> Invalid token, null",
                     AuthenticationError.create().invalidTokenError().build());
         }
 
