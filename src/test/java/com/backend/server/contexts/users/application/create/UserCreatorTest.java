@@ -2,7 +2,6 @@ package com.backend.server.contexts.users.application.create;
 
 import com.backend.server.contexts.users.domain.UserMother;
 import com.backend.server.contexts.users.domain.clazz.User;
-import com.backend.server.contexts.users.domain.dto.UserSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

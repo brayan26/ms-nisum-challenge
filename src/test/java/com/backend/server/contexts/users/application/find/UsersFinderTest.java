@@ -2,7 +2,6 @@ package com.backend.server.contexts.users.application.find;
 
 import com.backend.server.contexts.users.domain.UserMother;
 import com.backend.server.contexts.users.domain.clazz.User;
-import com.backend.server.contexts.users.domain.dto.UserSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +14,7 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class UsersFinderTest {
     private UsersFinder usersFinderUseCase;
-    private final UserSerializer user = UserMother.randomSerializer();
+    private final User user = UserMother.random();
 
     @BeforeEach
     public void setup(){
@@ -25,7 +24,7 @@ public class UsersFinderTest {
 
     @Test
     public void find_all_users_success() {
-        List<UserSerializer> users = usersFinderUseCase.run();
+        List<User> users = usersFinderUseCase.run();
         AssertionErrors.assertEquals( "user mock is not supported with a user list", List.of(this.user), users);
         Mockito.verify(usersFinderUseCase).run();
     }

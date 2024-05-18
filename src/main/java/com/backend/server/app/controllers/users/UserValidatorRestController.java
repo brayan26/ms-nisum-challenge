@@ -2,7 +2,6 @@ package com.backend.server.app.controllers.users;
 
 import com.backend.server.contexts.shared.infrastructure.utils.BindingResultUtil;
 import com.backend.server.contexts.users.domain.clazz.Login;
-import com.backend.server.contexts.users.domain.clazz.User;
 import com.backend.server.contexts.users.infrastructure.services.UserServiceHandler;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
