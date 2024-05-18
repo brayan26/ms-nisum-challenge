@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -26,8 +27,8 @@ public class UserEntity implements Serializable {
     private String email;
     @Column(name = "password")
     private String password;
-//    @OneToMany(mappedBy = "user")
-//    private List<PhoneEntity> phones;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PhoneEntity> phones;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "token")
@@ -42,11 +43,13 @@ public class UserEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
 
-    public static UserEntity create(String id, String name, String email, String password, List<Phone> phones,
-                                    boolean isActive, String token) {
+    public static UserEntity create(String id, String name, String email, String password,
+                                    List<Phone> phones, boolean isActive, String token) {
         LocalDateTime now = LocalDateTime.now();
         Date today = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-        return new UserEntity(id, name, email, password, isActive, token, today, today, today);
+        List<PhoneEntity> phoneEntities = phones.stream().map(phone ->
+                PhoneEntity.create(phone.getNumber(), phone.getCityCode(), phone.getCountryCode(), id)).toList();
+        return new UserEntity(id, name, email, password, phoneEntities, isActive, token, today, null, today);
     }
 
 }

@@ -13,7 +13,7 @@ public class UsersFinder {
     @Autowired
     private IUserRepository repository;
 
-    public List<UserSerializer> run() {
+    public List<User> run() {
         return repository.find();
     }
 }

@@ -12,19 +12,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "phones")
 public class PhoneEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(name = "number", length = 13)
     private String number;
     @Column(name = "cityCode")
     private String cityCode;
     @Column(name = "countryCode")
     private String countryCode;
-    @ManyToOne
-    @JoinColumn(name="user_id", referencedColumnName = "id")
-    private UserEntity user;
+    @Column(name = "user_id")
+    private String userId;
 
-    public static PhoneEntity create(String number, String cityCode, String countryCode, UserEntity user) {
-        return new PhoneEntity(null, number, cityCode, countryCode, null);
+
+    public static PhoneEntity create(String number, String cityCode, String countryCode, String userId) {
+        return new PhoneEntity(number, cityCode, countryCode, userId);
     }
 }

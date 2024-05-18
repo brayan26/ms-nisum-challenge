@@ -4,30 +4,30 @@ import com.backend.server.contexts.shared.domain.errors.UsersError;
 import com.backend.server.contexts.shared.domain.exceptions.GenericBadRequestException;
 import com.backend.server.contexts.shared.domain.exceptions.GenericNotFoundException;
 import com.backend.server.contexts.users.domain.clazz.User;
-import com.backend.server.contexts.users.domain.dto.UserSerializer;
 import com.backend.server.contexts.users.domain.repositories.IUserRepository;
 import com.backend.server.contexts.users.infrastructure.orm.sql.entities.UserEntity;
-import com.backend.server.contexts.users.infrastructure.orm.sql.repositories.JpaPhoneRepository;
 import com.backend.server.contexts.users.infrastructure.orm.sql.repositories.JpaUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
 public class UserRepositorySql implements IUserRepository {
     @Autowired
     private JpaUserRepository repository;
+
     @Autowired
-    private JpaPhoneRepository phoneRepository;
-    
+    private Environment env;
+
     @Override
     @Transactional
     public User create(User user) {
@@ -40,42 +40,25 @@ public class UserRepositorySql implements IUserRepository {
 
         UserEntity entity = repository.save(
             UserEntity.create(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getPhones(),
-                user.getIsActive(),
+                user.getId(), user.getName(), user.getEmail(),
+                user.getPassword(), user.getPhones(), user.getIsActive(),
                 user.getToken()
             )
         );
 
-//        phoneRepository.saveAll(
-//            user.getPhones()
-//                .stream()
-//                .map(phone -> PhoneEntity.create(phone.getNumber(), phone.getCityCode(), phone.getCountryCode(), entity))
-//                .collect(Collectors.toList())
-//        );
         return User.create(
-            entity.getId(),
-            entity.getName(),
-            entity.getEmail(),
-            entity.getPassword(),
-            user.getPhones(),
-            entity.getIsActive(),
-            entity.getToken(),
-            entity.getCreatedAt(),
-            entity.getModified(),
-            entity.getLastLogin()
+            entity.getId(), entity.getName(), entity.getEmail(), entity.getPassword(),
+            user.getPhones(), entity.getIsActive(), entity.getToken(),
+            entity.getCreatedAt(), entity.getModified(), entity.getLastLogin()
         );
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserSerializer> find() {
+    public List<User> find() {
         return repository.findAllUsers()
                 .stream()
-                .map(entity -> new ModelMapper().map(entity, UserSerializer.class))
+                .map(entity -> new ModelMapper().map(entity, User.class))
                 .toList();
     }
 
@@ -89,6 +72,9 @@ public class UserRepositorySql implements IUserRepository {
                     UsersError.create().notFound().build());
         }
         repository.inactiveUser(id);
+        ZoneId zoneId = ZoneId.of(Objects.requireNonNull(env.getProperty("app.timezone")));
+        Date today = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
+        repository.updateModifiedDate(id, today);
     }
 
     @Override
@@ -102,8 +88,7 @@ public class UserRepositorySql implements IUserRepository {
         }
         UserEntity entity = optional.get();
 
-        //TODO: the timezone should be a parameter
-        ZoneId zoneId = ZoneId.of("America/Bogota");
+        ZoneId zoneId = ZoneId.of(Objects.requireNonNull(env.getProperty("app.timezone")));
         Date today = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
         repository.updateLastLogin(entity.getId(), today);
         

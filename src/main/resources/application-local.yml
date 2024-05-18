@@ -1,9 +1,8 @@
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: debug
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
@@ -12,6 +11,8 @@ spring:
     username: root
     password: 1122q!
     driver-class-name: org.h2.Driver
+    platform: h2
 
 app:
+  timezone: America/Bogota
   init-sql: INSERT INTO UserEntity (id,name,email,password,isActive,token,createdAt,modified,lastLogin) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)
