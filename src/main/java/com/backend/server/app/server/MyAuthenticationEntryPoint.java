@@ -1,6 +1,5 @@
 package com.backend.server.app.server;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
@@ -16,7 +15,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-      throws IOException, ServletException {
+      throws IOException {
     // 401
     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
   }
