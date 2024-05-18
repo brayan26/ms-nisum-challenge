@@ -16,7 +16,7 @@ public class UserValidatorRestController {
     @Autowired
     private UserServiceHandler userServiceHandler;
 
-    @PostMapping(path = "/doLogin", produces = {"application/json"})
+    @PostMapping(path = "/doLogin", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<?> run(@Valid @RequestBody Login user, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(BindingResultUtil.create(result));

@@ -11,7 +11,7 @@ public class UsersFinderRestController {
     @Autowired
     private UsersFinder usersFinderUseCase;
 
-    @GetMapping(path = "/users/findAll", produces = {"application/json"})
+    @GetMapping(path = "/users/findAll", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<?> run() {
         return ResponseEntity.ok(usersFinderUseCase.run());
     }

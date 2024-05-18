@@ -18,7 +18,7 @@ public class UserCreatorRestController {
     @Autowired
     private UserServiceHandler userServiceHandler;
 
-    @PostMapping(path = "/users/add", produces = {"application/json"})
+    @PostMapping(path = "/users/add", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<?> run(@Valid @RequestBody User user, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(BindingResultUtil.create(result));
