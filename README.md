@@ -2,6 +2,7 @@
 
 ## Table of Contents
 
+- [Stack](#stack)
 - [Getting started](#getting-started)
 - [Domain Driven Architectures](#domain-driven-architectures)
 - [DDD and Clean Architecture](#ddd-and-clean-architecture)
@@ -20,7 +21,11 @@
     - [Mother Object](#mother-object)
     - [Value Object](#value-object)
 
+## Stack
+Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object, Builder Pattern, Create Pattern) + Unit test + Integration test
+
 ## Getting started
+SpringBoot application using JDK 17 for the Nisum company challenge, on CRUD operations of the user table
 Warning, for production environment do not load environment variables file based on profiles, please add in your .gitignore file the next line : */src/\*/resources/application-**
 
 **NOTE: if you use Linux or Mac exec ./mvnw, for windows ./mvnw.cmd**
@@ -33,18 +38,18 @@ build: ./mvnw clean package -DskipTests
 ```
 
 ```
-unit test: ./mvnw clean test
+run test: ./mvnw clean test
 ```
 
 In a browser, open 
-1. http://localhost:9006/api/v1/info
+1. http://localhost:8001/api/v1/info
 ```json
 {
   "msvc": "backend-template-api",
-  "version": "0.1.1"
+  "version": "1.2.0"
 }
 ```
-2. http://localhost:9006/api/v1/actuator/health
+2. http://localhost:8001/api/v1/actuator/health
 ```json
 {
   "status": "UP",
@@ -52,7 +57,7 @@ In a browser, open
     "db": {
       "status": "UP",
       "details": {
-        "database": "MySQL",
+        "database": "H2",
         "validationQuery": "isValid()"
       }
     },
@@ -69,10 +74,10 @@ In a browser, open
     "diskSpace": {
       "status": "UP",
       "details": {
-        "total": 62671097856,
-        "free": 43695169536,
+        "total": 245107195904,
+        "free": 110541873152,
         "threshold": 10485760,
-        "path": "/app/.",
+        "path": "/Users/brayanparra/workspace/ms-nisum-challenge/.",
         "exists": true
       }
     },
