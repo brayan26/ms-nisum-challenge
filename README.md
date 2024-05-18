@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Stack](#stack)
+- [Diagram](#diagram)
 - [Getting started](#getting-started)
 - [Domain Driven Architectures](#domain-driven-architectures)
 - [DDD and Clean Architecture](#ddd-and-clean-architecture)
@@ -24,12 +25,17 @@
 ## Stack
 Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object, Builder Pattern, Create Pattern) + Unit test + Integration test
 
+## Diagram
+![img_1.png](img_1.png)
+
 ## Getting started
 SpringBoot application using JDK 17 for the Nisum company challenge, on CRUD operations of the user table
 
 **NOTE:** The application creates a default user on startup
 
-ej.
+**NOTE:** All endpoints are secured except /doLogin
+
+ej. User default
 ```json
  {
         "id": "b3654253-d4a6-46cb-a74a-f30116bbadf6",
