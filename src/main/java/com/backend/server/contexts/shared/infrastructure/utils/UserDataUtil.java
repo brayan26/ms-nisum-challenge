@@ -10,7 +10,7 @@ import java.util.UUID;
 public class UserDataUtil {
     private static final String NAME = "Carlos Parra";
     private static final String EMAIL = "cparra@gmail.com";
-    private static final String PASSWORD = "1122q!";
+    private static final String PASSWORD = "1122Q!";
     private static final Boolean ACTIVE = true;
     private static final Date NOW = new Date();
 

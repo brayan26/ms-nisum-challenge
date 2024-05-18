@@ -28,6 +28,7 @@ public class WebSecurity {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                     authorizationManagerRequestMatcherRegistry
+                        .requestMatchers("/api/v1/h2/**").permitAll()
                         .requestMatchers("/api/v1/info").permitAll()
                         .requestMatchers("/api/v1/actuator/health").permitAll()
                         .requestMatchers("/api/v1/doLogin").permitAll()
