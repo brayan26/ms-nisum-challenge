@@ -29,6 +29,8 @@ public class User {
     private String email;
     @NotNull
     @NotBlank(message = "The password field should not be empty")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{4,}$",
+        message = "The password must contain at least one capital letter, one number, one special character and length >= 4")
     private String password;
     private List<Phone> phones = Collections.emptyList();
     private Boolean isActive;
