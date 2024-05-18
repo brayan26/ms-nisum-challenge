@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.backend.server</groupId>
 	<artifactId>backend-nisum-api</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.0</version>
 	<name>backend-nisum-api</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -18,6 +18,20 @@
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>1.53.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
