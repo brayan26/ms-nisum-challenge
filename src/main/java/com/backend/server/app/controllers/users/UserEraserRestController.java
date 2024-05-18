@@ -12,7 +12,7 @@ public class UserEraserRestController {
     @Autowired
     private UserEraser userEraserUseCase;
 
-    @DeleteMapping(path = "/users/delete/{id}", produces = {"application/json"}, consumes = {"application/json"})
+    @DeleteMapping(path = "/users/delete/{id}", produces = {"application/json"})
     public ResponseEntity<?> run(@PathVariable String id) {
         userEraserUseCase.run(id);
         return ResponseEntity.accepted().build();
