@@ -1,5 +1,6 @@
 package com.backend.server;
 
+import com.backend.server.contexts.shared.infrastructure.jwt.JwtUtils;
 import com.backend.server.contexts.shared.infrastructure.utils.UserDataUtil;
 
 import com.backend.server.contexts.users.domain.clazz.User;
@@ -30,6 +31,9 @@ public class BackendTemplateApiApplication implements ApplicationRunner {
 	@Autowired
 	private Environment env;
 
+	@Autowired
+	private JwtUtils jwtUtils;
+
 	public static void main(String[] args) {
 		SpringApplication.run(BackendTemplateApiApplication.class, args);
 	}
@@ -40,16 +44,17 @@ public class BackendTemplateApiApplication implements ApplicationRunner {
 		PasswordEncoder encoder = encoder();
 		User user = UserDataUtil.create();
 		user.setPassword(encoder.encode(user.getPassword()));
+		user.setToken(jwtUtils.generateJwtToken(user.getEmail()));
 		entityManager.createQuery(env.getProperty("app.init-sql"))
-				.setParameter(1, user.getId())
-				.setParameter(2, user.getName())
-				.setParameter(3, user.getEmail())
-				.setParameter(4, user.getPassword())
-				.setParameter(5, user.getIsActive())
-				.setParameter(6, user.getToken())
-				.setParameter(7, user.getCreated())
-				.setParameter(8, user.getModified())
-				.setParameter(9, user.getLastLogin())
+			.setParameter(1, user.getId())
+			.setParameter(2, user.getName())
+			.setParameter(3, user.getEmail())
+			.setParameter(4, user.getPassword())
+			.setParameter(5, user.getIsActive())
+			.setParameter(6, user.getToken())
+			.setParameter(7, user.getCreated())
+			.setParameter(8, user.getModified())
+			.setParameter(9, user.getLastLogin())
 		.executeUpdate();
 	}
 }

@@ -8,5 +8,6 @@ public interface IUserRepository {
     User create(User user);
     List<User> find();
     void delete(String id);
+    User findUserByEmail(String email);
     User doLogin(String username);
 }

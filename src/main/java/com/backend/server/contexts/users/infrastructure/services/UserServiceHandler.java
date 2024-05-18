@@ -2,7 +2,9 @@ package com.backend.server.contexts.users.infrastructure.services;
 
 import com.backend.server.contexts.shared.domain.errors.UsersError;
 import com.backend.server.contexts.shared.domain.exceptions.GenericBadRequestException;
+import com.backend.server.contexts.shared.infrastructure.jwt.JwtUtils;
 import com.backend.server.contexts.users.application.create.UserCreator;
+import com.backend.server.contexts.users.application.find.FindUserByEmail;
 import com.backend.server.contexts.users.application.find.UserValidator;
 import com.backend.server.contexts.users.domain.clazz.User;
 import com.backend.server.contexts.users.domain.dto.AccessTokenSerializer;
@@ -19,12 +21,18 @@ public class UserServiceHandler {
     @Autowired
     private UserValidator userValidatorUseCase;
     @Autowired
+    private FindUserByEmail findUserByEmailUseCase;
+    @Autowired
     private PasswordEncoder encoder;
+    @Autowired
+    private JwtUtils jwtUtils;
+
 
     public User create(User user) {
         user.setId(UUID.randomUUID().toString());
         user.setPassword(encoder.encode(user.getPassword()));
         user.setIsActive(true);
+        user.setToken(jwtUtils.generateJwtToken(user.getEmail()));
         return this.userCreatorUseCase.run(user);
     }
 
@@ -37,5 +45,9 @@ public class UserServiceHandler {
             );
         }
         return AccessTokenSerializer.create(user.getToken());
+    }
+
+    public User findByEmail(String email) {
+        return findUserByEmailUseCase.run(email);
     }
 }

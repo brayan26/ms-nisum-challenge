@@ -10,19 +10,19 @@ public class AuthenticationError extends BaseError {
     }
 
     public AuthenticationError unauthorizedError() {
-        this.setError("Autenticacion invalida");
+        this.setError("Invalid authentication");
         this.setCode("AUTH-00");
         return this;
     }
 
     public AuthenticationError invalidTokenError() {
-        this.setError("Token invalido");
+        this.setError("Invalid token");
         this.setCode("AUTH-01");
         return this;
     }
 
     public AuthenticationError expiredTokenError() {
-        this.setError("Token expirado");
+        this.setError("Expired token");
         this.setCode("AUTH-02");
         return this;
     }

@@ -11,10 +11,10 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class Payload implements Serializable {
-    public List<String> aud;
-    public List<String> scope;
-    public Long exp;
-    public List<String> authorities;
-    public String jti;
-    public String client_id;
+    private List<String> aud;
+    private List<String> scope;
+    private Long exp;
+    private List<String> authorities;
+    private String jti;
+    private String sub;
 }

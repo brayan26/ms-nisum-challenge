@@ -2,12 +2,15 @@ package com.backend.server.app.server;
 
 import com.backend.server.contexts.shared.domain.errors.AuthenticationError;
 import com.backend.server.contexts.shared.domain.exceptions.GenericUnauthorizedException;
+import com.backend.server.contexts.shared.infrastructure.jwt.JwtUtils;
 import com.backend.server.contexts.shared.infrastructure.utils.JwtDecoderUtil;
+import com.backend.server.contexts.users.infrastructure.services.UserServiceHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String HEALTH_URL_PREFIX = "/info";
     private static final String LOGIN_URL_PREFIX = "/doLogin";
     private static final String ACTUATOR_URL_PREFIX = "/actuator";
+    private static final String H2_URL_PREFIX = "/h2";
+
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private UserServiceHandler userServiceHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -37,7 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         UsernamePasswordAuthenticationToken authentication;
 
-        if (urlRequest.contains(HEALTH_URL_PREFIX) || urlRequest.contains(LOGIN_URL_PREFIX) || urlRequest.contains(ACTUATOR_URL_PREFIX)) {
+        if (urlRequest.contains(HEALTH_URL_PREFIX) || urlRequest.contains(LOGIN_URL_PREFIX)
+                || urlRequest.contains(H2_URL_PREFIX) || urlRequest.contains(ACTUATOR_URL_PREFIX)) {
             List<GrantedAuthority> grantedAuths = AuthorityUtils
                     .commaSeparatedStringToAuthorityList("public");
             authentication = new UsernamePasswordAuthenticationToken(PRINCIPAL, null, grantedAuths);
@@ -67,16 +77,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     AuthenticationError.create().invalidTokenError().build());
         }
 
-        JwtDecoderUtil decoder = new JwtDecoderUtil(token.replace(TOKEN_PREFIX, "").trim());
-        if (decoder.getPayload().getExp() * 1000 < (System.currentTimeMillis())) {
+        String authToken = token.replace(TOKEN_PREFIX, "").trim();
+        if (!jwtUtils.validateJwtToken(authToken)) {
+            throw new GenericUnauthorizedException(
+                String.format("<JwtAuthenticationFilter - getAuthentication> Token JWT not valid: '%s'", token),
+                AuthenticationError.create().invalidTokenError().build());
+        }
+
+        JwtDecoderUtil decoder = new JwtDecoderUtil(authToken);
+        if ((decoder.getPayload().getExp() * 1000) < (System.currentTimeMillis())) {
             throw new GenericUnauthorizedException(
                 String.format("<JwtAuthenticationFilter - getAuthentication> Expired token '%s'",
                         sf.format(decoder.getPayload().getExp() * 1000)),
                     AuthenticationError.create().expiredTokenError().build());
         }
 
+        if (!userServiceHandler.findByEmail(decoder.getPayload().getSub()).getIsActive()) {
+            throw new GenericUnauthorizedException(
+                    "<JwtAuthenticationFilter - getAuthentication> User is not active",
+                    AuthenticationError.create().expiredTokenError().build());
+        }
+
         List<GrantedAuthority> grantedAuths = AuthorityUtils
                 .commaSeparatedStringToAuthorityList(decoder.getPayload().getAuthorities().toString());
-        return new UsernamePasswordAuthenticationToken(decoder.getPayload().getClient_id(), null, grantedAuths);
+        return new UsernamePasswordAuthenticationToken(decoder.getPayload().getSub(), null, grantedAuths);
     }
 }

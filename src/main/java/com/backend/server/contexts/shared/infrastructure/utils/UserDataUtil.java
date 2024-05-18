@@ -12,7 +12,6 @@ public class UserDataUtil {
     private static final String EMAIL = "cparra@gmail.com";
     private static final String PASSWORD = "1122q!";
     private static final Boolean ACTIVE = true;
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMzQ1Njc5MCIsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImlhdCI6MTcxNTkxNzUzNCwiZXhwIjoxNzE1OTIxMTM0fQ.GQWaNOiCe2cLEw4fRTm1Q2mFdtN1UrtPjZ7UWzWaAsU";
     private static final Date NOW = new Date();
 
     public static User create() {
@@ -23,7 +22,7 @@ public class UserDataUtil {
             PASSWORD,
             List.of(new Phone("3040773", "1", "57")),
             ACTIVE,
-            TOKEN,
+            null,
             NOW,
             null,
             NOW

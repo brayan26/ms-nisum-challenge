@@ -32,7 +32,7 @@ public class UserEraserRestControllerTest {
     @BeforeEach
     public void setup() {
         url = new StringBuilder();
-        url.append("http://localhost:").append(port).append("/api/v1/users/");
+        url.append("http://localhost:").append(port).append("/api/v1/users/delete/");
     }
 
     @Test

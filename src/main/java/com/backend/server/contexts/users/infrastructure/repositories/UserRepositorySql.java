@@ -79,11 +79,23 @@ public class UserRepositorySql implements IUserRepository {
 
     @Override
     @Transactional(readOnly = true)
+    public User findUserByEmail(String email) {
+        Optional<UserEntity> optional = repository.findByEmail(email);
+        if (optional.isEmpty()) {
+            throw new GenericNotFoundException(
+                    String.format("<UserRepositorySql - findUserByEmail> email '%s' not exists", email),
+                    UsersError.create().notFound().build());
+        }
+        return new ModelMapper().map(optional.get(), User.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public User doLogin(String email) {
         Optional<UserEntity> optional = repository.findByEmail(email);
         if (optional.isEmpty()) {
             throw new GenericNotFoundException(
-                String.format("<UserRepositorySql - validateUser> username '%s' not exists", email),
+                String.format("<UserRepositorySql - validateUser> email '%s' not exists", email),
                 UsersError.create().notFound().build());
         }
         UserEntity entity = optional.get();

@@ -14,5 +14,7 @@ spring:
     platform: h2
 
 app:
+  jwtSecret: cdb7778b7ecf41ca88354f4b6cddc6c0cdb7778b7ecf41ca88354f4b6cddc6c0!
+  jwtExpirationMs: 3600000
   timezone: America/Bogota
   init-sql: INSERT INTO UserEntity (id,name,email,password,isActive,token,createdAt,modified,lastLogin) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)
