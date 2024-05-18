@@ -45,7 +45,7 @@ In a browser, open
 1. http://localhost:8001/api/v1/info
 ```json
 {
-  "msvc": "backend-template-api",
+  "msvc": "backend-nisum-api",
   "version": "1.2.0"
 }
 ```
