@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class UserMother {
     private static User create(List<Phone> phones, Date created, Date lastLogin) {
-        return new User("cdb7778b-7ecf-41ca-8835-4f4b6cddc6c0", "Carl Parra", "cparra@gmail.com", "1122q!", phones, true, "jwt", created, null, lastLogin);
+        return new User("cdb7778b-7ecf-41ca-8835-4f4b6cddc6c0", "Carl Parra", "cparra@gmail.com", "1122Q!", phones, true, "jwt", created, null, lastLogin);
     }
 
     public static User random() {
