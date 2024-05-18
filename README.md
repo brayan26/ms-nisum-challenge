@@ -26,27 +26,98 @@ Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object
 
 ## Getting started
 SpringBoot application using JDK 17 for the Nisum company challenge, on CRUD operations of the user table
-Warning, for production environment do not load environment variables file based on profiles, please add in your .gitignore file the next line : */src/\*/resources/application-**
 
+**NOTE:** The application creates a default user on startup
+
+ej.
+```json
+ {
+        "id": "b3654253-d4a6-46cb-a74a-f30116bbadf6",
+        "name": "Carlos Parra",
+        "email": "cparra@gmail.com",
+        "password": "$2a$10$6BiqGA12lbHulVM4gBxmi.9HYKB3kEFoy3ofKjpGiYxOWnPGjwM/.",
+        "phones": [],
+        "isActive": true,
+        "token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjcGFycmFAZ21haWwuY29tIiwiaWF0IjoxNzE2MDE5MTYxLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNzE2MDIyNzYxfQ.uZIW6fKJKnHSvr8_AZWNUNzMtVdPIF5sWIISDEefTagm3Z1EgzbDPZ4Oh2baKkTQ",
+        "created": "2024-05-18T07:59:21.807+00:00",
+        "modified": null,
+        "lastLogin": "2024-05-18T07:59:21.807+00:00"
+}
+```
+
+## Run
 **NOTE: if you use Linux or Mac exec ./mvnw, for windows ./mvnw.cmd**
 ```
-run: ./mvnw spring-boot:run
+run: sh ./mvnw spring-boot:run
 ```
 
 ```
-build: ./mvnw clean package -DskipTests
+build jar: sh ./mvnw clean package -DskipTests
 ```
 
 ```
-run test: ./mvnw clean test
+run test: sh ./mvnw clean test
+```
+## H2 Console
+visit http://localhost:8001/api/v1/h2
+```
+datasource: jdbc:h2:mem:test
+username: root
+password: 1122q!
 ```
 
-In a browser, open 
+## Postman
+import the ./apis.postman_collection.json file to your postman application
+
+![img.png](img.png)
+
+## Curl
+1. do login with default user
+```
+curl --location 'http://localhost:8001/api/v1/doLogin' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "cparra@gmail.com",
+    "password": "1122Q!"
+}'
+```
+
+2. Create a new user
+```
+curl --location 'localhost:8001/api/v1/users/add' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjcGFycmFAZ21haWwuY29tIiwiaWF0IjoxNzE2MDE5MTYxLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNzE2MDIyNzYxfQ.uZIW6fKJKnHSvr8_AZWNUNzMtVdPIF5sWIISDEefTagm3Z1EgzbDPZ4Oh2baKkTQ' \
+--data-raw '{
+    "name": "Brayan Parra Perez",
+    "email": "bparra@gmail.com",
+    "password": "1122Q!",
+    "phones": [{
+        "number": "3025639837",
+        "cityCode": "5",
+        "countryCode": "57"
+    }]
+}'
+```
+
+3. Find all users
+```
+curl --location 'http://localhost:8001/api/v1/users/findAll' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjcGFycmFAZ21haWwuY29tIiwiaWF0IjoxNzE2MDE4NzQ0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNzE2MDIyMzQ0fQ.QhFqwcQLZvcsFyJmgcFzwm6aNpQlISwiq_FsjZjWmXQ0LSVjUld2Bgvm2udb4iah'
+```
+
+4. Inactive a user
+```
+curl --location --request DELETE 'localhost:8001/api/v1/users/delete/:your_id_here' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjcGFycmFAZ21haWwuY29tIiwiaWF0IjoxNzE2MDE5MTYxLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNzE2MDIyNzYxfQ.uZIW6fKJKnHSvr8_AZWNUNzMtVdPIF5sWIISDEefTagm3Z1EgzbDPZ4Oh2baKkTQ'
+```
+***NOTE:*** once you deactivate the user, the token will be rejected
+
+In a browser, open
 1. http://localhost:8001/api/v1/info
 ```json
 {
   "msvc": "backend-nisum-api",
-  "version": "1.2.0"
+  "version": "1.4.1"
 }
 ```
 2. http://localhost:8001/api/v1/actuator/health
