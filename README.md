@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
+- [Getting started](#getting-started)
 - [Stack](#stack)
 - [Diagram](#diagram)
-- [Getting started](#getting-started)
 - [Domain Driven Architectures](#domain-driven-architectures)
 - [DDD and Clean Architecture](#ddd-and-clean-architecture)
     - [Clean Architecture layers](#clean-architecture-layers)
@@ -21,12 +21,6 @@
     - [Bounded Context](#bounded-context)
     - [Mother Object](#mother-object)
     - [Value Object](#value-object)
-
-## Stack
-Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object, Builder Pattern, Create Pattern) + Unit test + Integration test
-
-## Diagram
-![img_1.png](img_1.png)
 
 ## Getting started
 SpringBoot application using JDK 17 for the Nisum company challenge, on CRUD operations of the user table
@@ -51,7 +45,18 @@ ej. User default
 }
 ```
 
+## Stack
+Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object, Builder Pattern, Create Pattern) + Unit test + Integration test
+
+## Diagram
+![img_1.png](img_1.png)
+
+### Sequence diagram
+![nisum-challenge.drawio.png](nisum-challenge.drawio.png)
+
 ## Run
+Run application using maven
+
 **NOTE: if you use Linux or Mac exec ./mvnw, for windows ./mvnw.cmd**
 ```
 run: sh ./mvnw spring-boot:run
